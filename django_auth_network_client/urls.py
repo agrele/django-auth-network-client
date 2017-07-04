@@ -1,33 +1,11 @@
-# -*- coding: utf-8 -*-
 from django.conf.urls import url
-from django.views.generic import TemplateView
+from django.views.generic.base import RedirectView
 
 from . import views
 
 urlpatterns = [
-    url(
-        regex="^NetworkUser/~create/$",
-        view=views.NetworkUserCreateView.as_view(),
-        name='NetworkUser_create',
-    ),
-    url(
-        regex="^NetworkUser/(?P<pk>\d+)/~delete/$",
-        view=views.NetworkUserDeleteView.as_view(),
-        name='NetworkUser_delete',
-    ),
-    url(
-        regex="^NetworkUser/(?P<pk>\d+)/$",
-        view=views.NetworkUserDetailView.as_view(),
-        name='NetworkUser_detail',
-    ),
-    url(
-        regex="^NetworkUser/(?P<pk>\d+)/~update/$",
-        view=views.NetworkUserUpdateView.as_view(),
-        name='NetworkUser_update',
-    ),
-    url(
-        regex="^NetworkUser/$",
-        view=views.NetworkUserListView.as_view(),
-        name='NetworkUser_list',
-    ),
-	]
+	url(r'^$', views.Warn, name='auth_network'),
+	url(r'^identify/$', views.Identify, name='auth_network_identify'),
+	url(r'^set-token/(?P<user_uuid>[\x00-\x7F]+)/$', views.SetToken, name='auth_network_set_token'),
+	url(r'^callback/(?P<user_uuid>[\x00-\x7F]+)/(?P<token>[\x00-\x7F]+)/$', views.CallBack, name='auth_network_callback'),
+]

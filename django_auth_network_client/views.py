@@ -16,7 +16,7 @@ from django.views.generic import TemplateView, DetailView, ListView, FormView, C
 
 from .models import *
 
-
+CONFIG = settings.DJANGO_AUTH_NETWORK_CONFIG
 
 class WrongSecret(Exception): pass
 
@@ -26,7 +26,7 @@ def Warn(request):
 
 def Identify(request):
 	''' Let's go to the provider and log into it to ask for authorization '''
-	return redirect(settings.AUTH_NETWORK_URL + 'identify/' + settings.AUTH_NETWORK_KEY)
+	return redirect(CONFIG.URL + 'identify/' + CONFIG.KEY)
 
 @csrf_exempt # TODO : make sure this isn't stupid
 def SetToken(request, user_uuid):
@@ -37,7 +37,7 @@ def SetToken(request, user_uuid):
 	user_details = json.loads(user_details_json)
 
 	# secretly sets a new authentication token as the user's password
-	if secret != settings.AUTH_NETWORK_SECRET : raise WrongSecret
+	if secret != CONFIG.SECRET : raise WrongSecret
 	network_user, created = NetworkUser.objects.get_or_create(uuid=uuid.UUID(user_uuid))
 	try:
 		network_user.update_user_details(user_details)

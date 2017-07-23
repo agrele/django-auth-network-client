@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 
 
 class UserCreationError(Exception): pass
+class WarnWhenNewAccountError(Exception): pass
 
 
 
@@ -63,18 +64,10 @@ class NetworkUser(models.Model):
 
 
 def warn_when_new_account(username):
-	subject = '[Fiji] ' + '{} a créé un compte !'.format(username)
-	text = \
-		'''
-
-		{} vient de créer un compte sur http://fichier.jdem.fr.
-		Si nécessaire, vous pouvez désormais lui accorder des droits sur une partie du fichier.
-		
-		-
-		Message automatique envoyé par Fiji
-		
-		'''.format(username)
-	from_email = settings.EMAIL_FROM
-	text = textwrap.dedent(text) # removes useless indentations from the email text
-	recipient_list = ['federations@jeunes-democrates.org',]
-	send_mail(subject, text, from_email, recipient_list)
+	config = settings.DJANGO_AUTH_NETWORK_CONFIG.WARN_WHEN_NEW_ACCOUNT
+	if config :
+		try :
+			send_mail(config.SUBJECT(username), config.TEXT(username), config.FROM_EMAIL, config.RECIPIENT_LIST)
+		except TypeError :
+			# TODO : catchall exceptions are not good
+			raise TypeError('New account warning email could not be generated.') from error

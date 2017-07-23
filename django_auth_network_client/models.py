@@ -64,10 +64,10 @@ class NetworkUser(models.Model):
 
 
 def warn_when_new_account(username):
-	config = settings.DJANGO_AUTH_NETWORK_CONFIG.WARN_WHEN_NEW_ACCOUNT
+	config = settings.DJANGO_AUTH_NETWORK_CONFIG['WARN_WHEN_NEW_ACCOUNT']
 	if config :
 		try :
-			send_mail(config.SUBJECT(username), config.TEXT(username), config.FROM_EMAIL, config.RECIPIENT_LIST)
+			send_mail(config['SUBJECT'](username), config['TEXT'](username), config['FROM_EMAIL'], config['RECIPIENT_LIST'])
 		except TypeError :
 			# TODO : catchall exceptions are not good
 			raise TypeError('New account warning email could not be generated.') from error

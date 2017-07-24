@@ -43,8 +43,9 @@ def SetToken(request, user_uuid):
 		network_user.update_user_details(user_details)
 	except UserCreationError:
 		# user creation failed, deleting network_user
+		network_user.user.delete()
 		network_user.delete()
-		return HttpResponse(status=409)
+		return HttpResponse(status=500, reason="The application was not able to create an account.")
 	network_user.user.set_password(new_token)
 	network_user.user.save()
 	return HttpResponse('Token succesfully set to ' + str(new_token))

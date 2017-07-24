@@ -40,11 +40,9 @@ class NetworkUser(models.Model):
 				# no user with that username exist, let's try and create the user
 				try :
 					self.user = User.objects.create_user(**user_details)
-				except IntegrityError :
-					raise UserCreationError
-				else :
 					warn_when_new_account(user_details['username']) # sends an email to the admins
-
+				except :
+					raise UserCreationError
 			else :
 				# there is already a user with that username, so we want to bind the network user to it
 				# this is a recovery feature, not supposed to actually be used
@@ -66,8 +64,4 @@ class NetworkUser(models.Model):
 def warn_when_new_account(username):
 	config = settings.DJANGO_AUTH_NETWORK_CONFIG['WARN_WHEN_NEW_ACCOUNT']
 	if config :
-		try :
-			send_mail(config['SUBJECT'](username), config['TEXT'](username), config['FROM_EMAIL'], config['RECIPIENT_LIST'])
-		except TypeError :
-			# TODO : catchall exceptions are not good
-			raise TypeError('New account warning email could not be generated.') from error
+		send_mail(config['SUBJECT_GENERATOR'](username), config['TEXT_GENERATOR'](username), config['FROM_EMAIL'], config['RECIPIENT_LIST'])

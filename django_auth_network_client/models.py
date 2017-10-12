@@ -40,9 +40,10 @@ class NetworkUser(models.Model):
 				# no user with that username exist, let's try and create the user
 				try :
 					self.user = User.objects.create_user(**user_details)
-					warn_when_new_account(user_details['username']) # sends an email to the admins
 				except :
 					raise UserCreationError
+				else :
+					warn_when_new_account(user_details['username']) # sends an email to the admins
 			else :
 				# there is already a user with that username, so we want to bind the network user to it
 				# this is a recovery feature, not supposed to actually be used

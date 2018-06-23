@@ -7,7 +7,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist, ImproperlyConfigured
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect, HttpResponse, HttpRequest, Http404, JsonResponse
 from django.shortcuts import get_object_or_404, render, render_to_response, redirect
 from django.template import RequestContext

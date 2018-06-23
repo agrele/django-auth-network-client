@@ -19,7 +19,7 @@ class NetworkUser(models.Model):
 
 	''' The NetworkUser is an extension of the standard Django User model. '''
 
-	user = models.OneToOneField(User, null=True, related_name='network_user')
+	user = models.OneToOneField(User, null=True, related_name='network_user', on_delete=models.CASCADE)
 	uuid = models.UUIDField(primary_key=True, max_length=32, default=uuid.uuid4, editable=False)
 
 	def __str__(self):

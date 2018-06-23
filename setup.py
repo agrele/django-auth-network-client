@@ -46,7 +46,7 @@ history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
     name='django-auth-network-client',
-    version=version,
+    version='0.2.7',
     description="""Django Auth Network (DAN) is a set of two packages that create Google and Facebook-style authentication, but using your own provider instead of Google or Facebook. This is the client package, and it allows an app to connect to your provider package.""",
     long_description=readme + '\n\n' + history,
     author='Antonin Grêlé',
